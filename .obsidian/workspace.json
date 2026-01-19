@@ -1,0 +1,1062 @@
+{
+  "main": {
+    "id": "5324373015726ba8",
+    "type": "split",
+    "children": [
+      {
+        "id": "4509724f8bf84da7",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "e7a7b303c61786dc",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "597be6ff516af33c",
+    "type": "split",
+    "children": [
+      {
+        "id": "920a3562f5ddd3e8",
+        "type": "tabs",
+        "dimension": 76.7321613236815,
+        "children": [
+          {
+            "id": "21169c16034e80f0",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "파일 탐색기"
+            }
+          },
+          {
+            "id": "d27233d809ccc3b9",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "북마크"
+            }
+          }
+        ]
+      },
+      {
+        "id": "05707a1f2d35a0e3",
+        "type": "tabs",
+        "dimension": 23.26783867631851,
+        "children": [
+          {
+            "id": "b158bcdab7b75ff0",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": true,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "검색"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 335.5
+  },
+  "right": {
+    "id": "8a97be749d03aff5",
+    "type": "split",
+    "children": [
+      {
+        "id": "f904a3b793251c90",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "0d57332984667d88",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Area/🏛 002 지식/📚 002_003 도구적 지식/📔 002_003.a00 프로그래밍/📄 002_003.a00.b Uber Eats with Nest/🎓 002_003.b00.b2 GraphQL API/🎓 002_003.b00.b2e DTO 유효성 검사.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "🎓 002_003.b00.b2e DTO 유효성 검사 의 개요"
+            }
+          },
+          {
+            "id": "522c61a7b91e7f61",
+            "type": "leaf",
+            "state": {
+              "type": "calendar",
+              "state": {},
+              "icon": "lucide-ghost",
+              "title": "calendar"
+            }
+          },
+          {
+            "id": "60e1ddda67c26f8b",
+            "type": "leaf",
+            "state": {
+              "type": "advanced-tables-toolbar",
+              "state": {},
+              "icon": "lucide-ghost",
+              "title": "advanced-tables-toolbar"
+            }
+          },
+          {
+            "id": "baf899f34cb25aa1",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "42c8a3458bbfca80",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "ee5a841fc09a9eb2",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "049248477781b512",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "19a4e13ad4de1c5a",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "6fd75d32092a117a",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "c16fe96cb67cca41",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "6b5a11bebbebcd00",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "ee2d11597145eb97",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "de41d8747f12668b",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "eb2fa3734ddacbe2",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "70ee3dd4968c8c37",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "e61da20b326bf194",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "331c35ae2d8750c6",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "859adc451e035489",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "7c824a591cfa15e3",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "8dceee79ebe124a6",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "32fbf15e0551b26a",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "e583cf445759f4c6",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "9cea847f131d35ed",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "dc9db9ecf05bc2aa",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "442f55e712774cd8",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "744b5bc54972ed88",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "9566a156f6dfd75a",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "1be5555d38df6ec4",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "cc4db4d804e6beac",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "d558cd417afda6ef",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "42c6b5f7a12e966f",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "af9ade44d4442962",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "955c636782abd8ab",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "5e7de02f01905006",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "23a5da5a9d7bf1b6",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "82c40f2096a2b59b",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "57c3d4704871cb0e",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "c113c25a46df6774",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "43c6e0b1d9ec52a6",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "ee5230fb3ef0c18d",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "6b1837790da18b17",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "9169a4a90be96c40",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "5112a1820a9f525d",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "bd71e8fd166a6551",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "0852f14ed58b8f85",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "8cf42f9aef3c10a2",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "12bd53bd5cd3fe20",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "08c373da6d04ae91",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "4c2a4f363d5d9546",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "ebc7955fadc32c0e",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "dafdd85eda418d8b",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "2ecf2e105899190b",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "0bb773baf19266c5",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "eb9205e52ef331f8",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "310247a2816d4b9e",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "394e0ea026a1c223",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "ee6e01d04d30df2e",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "51562799be1a1122",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "cb404715e031dddf",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "1148ac0f661731b5",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "3bb522093d9fa75a",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "80a2450890be367b",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "8da253c123068e11",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "d9c882e8606398fb",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "5b608c112b2edbdc",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "d6ea44553115dee0",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "144a2ba48e065de6",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "5e947d27b8ac6ddb",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "58ce148efcf110f2",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "532e210582aac2dd",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "63736e686960a772",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "9c4a33f58d97be6d",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "6145c6ff472772de",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "39842dd10d1d3028",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "d895b00e235149bc",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "3283b9864566ccbe",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "f74408de51e682cf",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "5d88f9eda242779b",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          },
+          {
+            "id": "22c06617810ee534",
+            "type": "leaf",
+            "state": {
+              "type": "graph-analysis",
+              "state": {},
+              "icon": "lucide-ghost",
+              "title": "graph-analysis"
+            }
+          },
+          {
+            "id": "86ac38572faa1d92",
+            "type": "leaf",
+            "state": {
+              "type": "graph-analysis",
+              "state": {},
+              "icon": "lucide-ghost",
+              "title": "graph-analysis"
+            }
+          },
+          {
+            "id": "b17beb357fbf9abf",
+            "type": "leaf",
+            "state": {
+              "type": "graph-analysis",
+              "state": {},
+              "icon": "lucide-ghost",
+              "title": "graph-analysis"
+            }
+          },
+          {
+            "id": "1fd0e88dcb6cf64b",
+            "type": "leaf",
+            "state": {
+              "type": "graph-analysis",
+              "state": {},
+              "icon": "lucide-ghost",
+              "title": "graph-analysis"
+            }
+          },
+          {
+            "id": "d6eb790bf36bc019",
+            "type": "leaf",
+            "state": {
+              "type": "graph-analysis",
+              "state": {},
+              "icon": "lucide-ghost",
+              "title": "graph-analysis"
+            }
+          }
+        ],
+        "currentTab": 82
+      },
+      {
+        "id": "85ec76102a874b14",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "cce0d048625728cf",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Area/🏛 002 지식/📚 002_003 도구적 지식/📔 002_003.a00 프로그래밍/📄 002_003.a00.b Uber Eats with Nest/🎓 002_003.b00.b2 GraphQL API/🎓 002_003.b00.b2e DTO 유효성 검사.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "🎓 002_003.b00.b2e DTO 유효성 검사 의 백링크"
+            }
+          },
+          {
+            "id": "a6595b6edf1e0db0",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Area/🏛 002 지식/📚 002_003 도구적 지식/📔 002_003.a00 프로그래밍/📄 002_003.a00.a Nest.js/🎓 002_003.a00.a4 유닛 테스트/🎓 002_003.a00.a4 유닛 테스트.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "🎓 002_003.a00.a4 유닛 테스트 의 나가는 링크"
+            }
+          },
+          {
+            "id": "c59a7925358fc433",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "태그"
+            }
+          },
+          {
+            "id": "7c09781a63f9ae09",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "새 탭"
+            }
+          }
+        ],
+        "currentTab": 3
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:빠른 전환기 열기": false,
+      "graph:그래프 뷰 열기": false,
+      "canvas:새 캔버스 만들기": false,
+      "daily-notes:오늘의 일일 노트 열기": false,
+      "command-palette:명령어 팔레트 열기": false,
+      "bases:새 베이스 생성하기": false,
+      "table-editor-obsidian:Advanced Tables Toolbar": false
+    }
+  },
+  "active": "e7a7b303c61786dc",
+  "lastOpenFiles": [
+    "PARA/Project/주간 업무일지/주간 업무 추적 및 로드맵 운영 가이드.pdf",
+    "PARA/Project/주간 업무일지/주간 업무일지.md",
+    "PARA/Project/주간 업무일지",
+    "PARA/Project/컬쳐핏/컬쳐핏.md",
+    "Home.md",
+    "PARA/Project/Portal Infrastructure 문서.md",
+    "PARA/Project/컬쳐핏",
+    "PARA/Project/언어 컨벤션/0. 스토리_시나리오_유즈케이스_구분.html",
+    "PARA/Project/언어 컨벤션/1. 기획 언어 컨벤션.md",
+    "PARA/Project/언어 컨벤션/story-scenario-usecase-guide.md",
+    "PARA/Project/언어 컨벤션/1. 기획 언어 컨벤션.html",
+    "PARA/Project/언어 컨벤션/attachment",
+    "PARA/Project/언어 컨벤션",
+    "PARA/Resource/Framework/Templater/Template/MOC base.md",
+    "PARA/Resource/Framework/Templater/Template/업무일지.md",
+    "PARA/Resource/Framework/Templater/Script/src/uuid.js",
+    "🏛 1 철학/📚 1.1 사고/📔 1.1d 예술적 접근/📄 1.1d.a 회고록/🌅 1.1d.a1 2025/📅 1.1d.a1c 12/🖋 1.1d.a1c9 2025-12-11.md",
+    "🏛 1 철학/📚 1.1 사고/📔 1.1d 예술적 접근/📄 1.1d.a 회고록/🌅 1.1d.a1 2025/📅 1.1d.a1c 12/🖋 1.1d.a1c3 2025-12-03.md",
+    "🏛 1 철학/📚 1.1 사고/📔 1.1d 예술적 접근/📄 1.1d.a 회고록/🌅 1.1d.a1 2025/📅 1.1d.a1a 10/🖋 1.1d.a1a9 2025-10-24.md",
+    "🏛 1 철학/📚 1.1 사고/📔 1.1d 예술적 접근/📄 1.1d.a 회고록/🌅 1.1d.a1 2025/📅 1.1d.a1a 10/🖋 1.1d.a1a7 2025-10-22.md",
+    "🏛 1 철학/📚 1.1 사고/📔 1.1d 예술적 접근/📄 1.1d.a 회고록/🌅 1.1d.a1 2025/📅 1.1d.a1a 10/🖋 1.1d.a1a5 2025-10-20.md",
+    "🏛 1 철학/📚 1.1 사고/📔 1.1d 예술적 접근/📄 1.1d.a 회고록/🌅 1.1d.a1 2025/📅 1.1d.a1a 10/🖋 1.1d.a1a2 2025-10-16.md",
+    "🏛 1 철학/📚 1.1 사고/📔 1.1d 예술적 접근/📄 1.1d.a 회고록/🌅 1.1d.a1 2025/📅 1.1d.a1a 10/🖋 1.1d.a1a1 2025-10-15.md",
+    "🏛 2 지식/📚 2.3 도구적 지식/📔 2.3a 프로그래밍/📔 2.3a 프로그래밍.md",
+    "🏛 2 지식/🏛 2 지식.md",
+    "Pasted image 20251230110645.png",
+    "무제 1.md",
+    "🏛 3 활동/📚 3.1 업무/📔 3.1a Lumir/📄 3.1a.f 프로젝트/💼 3.1a.f1 Lumir-ERP/🗂 3.1a.f1a 문서/🖋 3.1a.f1a2 결재/🖋 3.1a.f1a2 결재.md",
+    "무제 2.md",
+    "🏛 3 활동/📚 3.1 업무/📔 3.1a Lumir/📄 3.1a.f 프로젝트/💼 3.1a.f1 Lumir-ERP/🗂 3.1a.f1a 문서/🖋 3.1a.f1a2 결재/🖋 3.1a.f1a2a 합의선.md",
+    "🏛 3 활동/📚 3.1 업무/📔 3.1a Lumir/📄 3.1a.f 프로젝트/💼 3.1a.f1 Lumir-ERP/🗂 3.1a.f1a 문서/🗂 3.1a.f1a 문서.md",
+    "🏛 3 활동/📚 3.1 업무/📔 3.1a Lumir/📄 3.1a.f 프로젝트/💼 3.1a.f1 Lumir-ERP/💼 3.1a.f1 Lumir-ERP.md",
+    "🏛 3 활동/📚 3.1 업무/📔 3.1a Lumir/📄 3.1a.f 프로젝트/💼 3.1a.f2 Lumir-CMS/💼 3.1a.f2 Lumir-CMS.md",
+    "🏛 3 활동/📚 3.1 업무/📔 3.1a Lumir/📄 3.1a.e 회의/2025/11/🖋 3.1a.e1 2025-11-04.md",
+    "PARA/Project",
+    "PARA/Area",
+    "Pasted image 20251230105631.png",
+    "성과발표/src/src_f731b6de-41b2-43ae-b940-e7b88348aa03_01.png",
+    "🏛 2 지식/📚 2.3 도구적 지식/📔 2.3a 프로그래밍/📄 2.3a.b Uber Eats with Nest/🎓 2.3a.b6 User 인증/src_2.3a.b6_08.png",
+    "성과발표/src/src_f731b6de-41b2-43ae-b940-e7b88348aa03_02.png",
+    "🏛 1 철학/📚 1.1 사고/📔 1.1d 예술적 접근/📄 1.1d.a 회고록/🌅 1.1d.a1 2025/📅 1.1d.a1b 11/src_1.1d.a_01.png",
+    "🏛 2 지식/📚 2.3 도구적 지식/📔 2.3a 프로그래밍/📄 2.3a.b Uber Eats with Nest/🎓 2.3a.b6 User 인증/src/src_2.3a.b6_01.png",
+    "🏛 2 지식/📚 2.3 도구적 지식/📔 2.3a 프로그래밍/📄 2.3a.b Uber Eats with Nest/🎓 2.3a.b5 User CRUD/src/src_2.3a.b5_01.png",
+    "🏛 2 지식/📚 2.3 도구적 지식/📔 2.3a 프로그래밍/📄 2.3a.b Uber Eats with Nest/🎓 2.3a.b4 TypeORM과 Nest/src/src_2.3a.b4_21.png",
+    "🏛 2 지식/📚 2.3 도구적 지식/📔 2.3a 프로그래밍/📄 2.3a.a Nest.js/🎓 2.3a.a3 Rest API 만들기/src/src_2.3a.a3_09.png"
+  ]
+}

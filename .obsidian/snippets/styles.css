@@ -1,0 +1,24 @@
+/* 폴더 탭 스타일 */
+.nav-files-container.node-insert-event.show-unsupported {
+  overflow-x: auto;
+}
+.tree-item-self * {
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+@media (hover: hover) {
+  body:not(.is-grabbing) .tree-item-self.is-clickable:hover {
+    width: fit-content;
+  }
+}
+body:not(.is-phone)
+  .workspace-leaf.mod-active
+  .tree-item-self.has-focus:focus-within {
+  width: fit-content;
+}
+body:not(.is-phone) .workspace-leaf.mod-active .tree-item-self.has-focus {
+  width: fit-content;
+}
+body:not(.full-file-names) .tree-item-self {
+  width: fit-content;
+}

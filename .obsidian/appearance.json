@@ -1,0 +1,12 @@
+{
+  "enabledCssSnippets": [
+    "custom-admonitions.f88aec",
+    "styles"
+  ],
+  "interfaceFontFamily": "맑은 고딕",
+  "textFontFamily": "맑은 고딕",
+  "monospaceFontFamily": "Hack,맑은 고딕",
+  "cssTheme": "Minimal",
+  "theme": "system",
+  "accentColor": "#5d81ac"
+}

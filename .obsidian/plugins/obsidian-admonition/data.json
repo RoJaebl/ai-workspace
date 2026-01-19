@@ -1,0 +1,50 @@
+{
+  "userAdmonitions": {
+    "code": {
+      "type": "code",
+      "color": "139, 137, 225",
+      "icon": {
+        "name": "lucide-code-2",
+        "type": "obsidian"
+      },
+      "command": false,
+      "title": "Code",
+      "injectColor": true,
+      "noTitle": false,
+      "copy": true
+    },
+    "image": {
+      "type": "image",
+      "color": "174, 136, 101",
+      "icon": {
+        "name": "lucide-image",
+        "type": "obsidian"
+      },
+      "command": false,
+      "title": "image",
+      "injectColor": true,
+      "noTitle": false
+    }
+  },
+  "syntaxHighlight": false,
+  "copyButton": true,
+  "version": "10.3.2",
+  "autoCollapse": false,
+  "defaultCollapseType": "open",
+  "injectColor": true,
+  "parseTitles": true,
+  "dropShadow": true,
+  "hideEmpty": false,
+  "open": {
+    "admonitions": true,
+    "icons": true,
+    "other": true,
+    "advanced": false
+  },
+  "icons": [],
+  "useFontAwesome": true,
+  "rpgDownloadedOnce": false,
+  "msDocConverted": false,
+  "useSnippet": false,
+  "snippetPath": "custom-admonitions.f88aec"
+}

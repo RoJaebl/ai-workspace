@@ -1,0 +1,19 @@
+{
+  "propertiesInDocument": "source",
+  "showLineNumber": true,
+  "trashOption": "local",
+  "newFileLocation": "current",
+  "newLinkFormat": "shortest",
+  "useMarkdownLinks": false,
+  "showUnsupportedFiles": true,
+  "attachmentFolderPath": "./",
+  "spellcheck": false,
+  "userIgnoreFilters": [
+    "Resource/Dataview/node_modules/",
+    "Resource/Framework/Templater/Script/node_modules/"
+  ],
+  "alwaysUpdateLinks": true,
+  "promptDelete": false,
+  "useTab": false,
+  "tabSize": 2
+}
