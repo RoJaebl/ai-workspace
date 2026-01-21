@@ -119,62 +119,70 @@ NEWS/
 
 ### 3.1 컴포넌트 역할별 접미사
 
-| 역할 | 접미사 | 구조 | 설명 |
-|------|--------|------|------|
-| Section | `.section` | 폴더 + `index.tsx` | 페이지의 주요 섹션 |
-| Panel | `.panel` | 폴더 + `index.tsx` | 사이드 패널, 상세 패널 |
-| Module | `.module` | 폴더 + `index.tsx` | 재사용 가능한 모듈 |
+| 역할 | 접미사 | 기본 구조 | 설명 |
+|------|--------|----------|------|
+| Section | `.section.tsx` | 단일 파일 | 페이지의 주요 섹션 |
+| Panel | `.panel.tsx` | 단일 파일 | 사이드 패널, 상세 패널 |
+| Module | `.module.tsx` | 단일 파일 | 재사용 가능한 모듈 |
 | Modal | `.modal.tsx` | 단일 파일 | 모달 다이얼로그 |
 | Component | `.component.tsx` | 단일 파일 | 일반 컴포넌트 |
 
-### 3.2 컴포넌트 이름 패턴
+### 3.2 파일에서 폴더 구조로 전환 기준
+
+컴포넌트는 **기본적으로 단일 파일**로 시작하고, 다음 조건에 해당할 때 **폴더 구조로 전환**합니다:
+
+| 기준 | 설명 |
+|------|------|
+| **코드량 기준** | 약 500줄 이상일 때 분리 검토 |
+| **하위 컴포넌트 분리** | section 내에 panel, module, modal 단위로 구분 가능한 로직 발견 시 |
+| **관심 분리** | 독립적인 상태 관리나 비즈니스 로직이 존재할 때 |
+| **재사용성** | 하위 컴포넌트를 다른 곳에서도 사용해야 할 때 |
+
+**전환 시기 판단:**
+1. 파일이 500줄을 넘어갈 때 내부 로직을 검토
+2. 명확히 분리 가능한 panel, module, modal이 있으면 폴더로 전환
+3. 폴더 전환 시 `index.tsx`를 메인 컴포넌트로, `_ui/` 하위에 분리된 컴포넌트 배치
+
+### 3.3 컴포넌트 이름 패턴
 
 ```typescript
-// Section (폴더 구조)
+// ✅ 기본: 단일 파일 구조 (권장 시작점)
 _ui/
-  IrList.section/           // {Domain}{Type}.section/
-    index.tsx               // 메인 컴포넌트
-    _ui/                    // 하위 컴포넌트
-      IrTable.module/       // {Domain}{Type}.module/
-        index.tsx
-        _ui/
-          Switch.component.tsx
+  IrList.section.tsx          // {Domain}{Type}.section.tsx
+  IrDetail.panel.tsx          // {Domain}Detail.panel.tsx
+  IrTable.module.tsx          // {Domain}{Type}.module.tsx
+  CategoryManagement.modal.tsx // {Purpose}.modal.tsx
+  Switch.component.tsx        // {Name}.component.tsx
 
-// Panel (폴더 구조)
+// ✅ 확장: 폴더 구조 (500줄+ 또는 하위 컴포넌트 분리 시)
 _ui/
-  IrDetail.panel/           // {Domain}Detail.panel/
+  IrList.section/             // 단일 파일에서 폴더로 전환
+    index.tsx                 // 메인 컴포넌트
+    _ui/                      // 분리된 하위 컴포넌트
+      IrTable.module.tsx      // 테이블 모듈 분리
+      IrFilter.module.tsx     // 필터 모듈 분리
+      DeleteConfirm.modal.tsx // 모달 분리
+
+  IrDetail.panel/             // 패널도 필요시 폴더로 전환
     index.tsx
     _ui/
-      DeleteConfirm.modal.tsx
-
-// Content Section (단일 파일)
-_ui/
-  IrContent.section.tsx     // {Domain}Content.section.tsx
-
-// Modal (단일 파일)
-_ui/
-  CategoryManagement.modal.tsx    // {Purpose}.modal.tsx
-  SubmitConfirm.modal.tsx         // {Purpose}.modal.tsx
-  IrSortOrder.modal.tsx           // {Domain}{Purpose}.modal.tsx
-
-// Component (단일 파일)
-_ui/
-  Switch.component.tsx      // {Name}.component.tsx
+      IrForm.module.tsx
+      AttachmentList.module.tsx
 ```
 
-### 3.3 컴포넌트 내보내기 패턴
+### 3.4 컴포넌트 내보내기 패턴
 
 ```typescript
-// 폴더 구조 (index.tsx)
-// 파일: _ui/IrList.section/index.tsx
+// 단일 파일 (기본)
+// 파일: _ui/IrList.section.tsx
 export default function IrListSection() { ... }
 
-// 단일 파일
 // 파일: _ui/DeleteConfirm.modal.tsx
 export function DeleteConfirmModal() { ... }
 
-// 파일: _ui/IrContent.section.tsx
-export default function IrContentSection() { ... }
+// 폴더 구조 (확장 시)
+// 파일: _ui/IrList.section/index.tsx
+export default function IrListSection() { ... }
 ```
 
 ---
@@ -579,7 +587,8 @@ import IrFormSection from "./IrForm.section";
 
 ### UI 컴포넌트
 - [ ] 역할에 맞는 접미사 사용 (section, panel, module, modal, component)
-- [ ] 폴더 구조 컴포넌트는 index.tsx 사용
+- [ ] 기본적으로 단일 파일 구조 사용
+- [ ] 500줄 이상 또는 하위 컴포넌트 분리 시 폴더 구조로 전환 (index.tsx 사용)
 - [ ] Props 인터페이스 정의
 
 ### 서비스/훅
