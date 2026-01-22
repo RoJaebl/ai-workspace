@@ -14,45 +14,12 @@ specialized knowledge, workflows, and tools. Think of them as "onboarding guides
 domains or tasks—they transform Claude from a general-purpose agent into a specialized agent
 equipped with procedural knowledge that no model can fully possess.
 
-Skills can also bundle scripts in any language (Python, Node.js, Bash, etc.), giving Claude
-capabilities far beyond what's possible in a single prompt.
-
 ### What Skills Provide
 
 1. Specialized workflows - Multi-step procedures for specific domains
 2. Tool integrations - Instructions for working with specific file formats or APIs
 3. Domain expertise - Company-specific knowledge, schemas, business logic
 4. Bundled resources - Scripts, references, and assets for complex and repetitive tasks
-
-### How Skills Work
-
-Skills are **model-invoked**: Claude decides which Skills to use based on the user's request.
-
-1. **Discovery**: At startup, Claude loads only the name and description of each available Skill.
-2. **Activation**: When the request matches a Skill's description, Claude asks to use it.
-3. **Execution**: Claude follows the Skill's instructions, loading referenced files or running bundled scripts as needed.
-
-### Where Skills Live
-
-| Location   | Path                    | Applies to                        |
-|------------|-------------------------|-----------------------------------|
-| Enterprise | Managed settings        | All users in your organization    |
-| Personal   | `~/.claude/skills/`     | You, across all projects          |
-| Project    | `.claude/skills/`       | Anyone working in this repository |
-| Plugin     | Bundled with plugins    | Anyone with the plugin installed  |
-
-If two Skills have the same name, the higher row wins.
-
-### When to Use Skills vs Other Options
-
-| Use this         | When you want to...                                                        | When it runs                   |
-|------------------|----------------------------------------------------------------------------|--------------------------------|
-| **Skills**       | Give Claude specialized knowledge (e.g., "review PRs using our standards") | Claude chooses when relevant   |
-| **Slash commands** | Create reusable prompts (e.g., `/deploy staging`)                        | You type `/command` to run it  |
-| **CLAUDE.md**    | Set project-wide instructions (e.g., "use TypeScript strict mode")         | Loaded into every conversation |
-| **Subagents**    | Delegate tasks to a separate context with its own tools                    | Claude delegates, or you invoke explicitly |
-| **Hooks**        | Run scripts on events (e.g., lint on file save)                            | Fires on specific tool events  |
-| **MCP servers**  | Connect Claude to external tools and data sources                          | Claude calls MCP tools as needed |
 
 ## Core Principles
 
@@ -97,28 +64,8 @@ skill-name/
 
 Every SKILL.md consists of:
 
-- **Frontmatter** (YAML): Contains metadata fields. Claude uses `name` and `description` to determine when the skill gets used.
-- **Body** (Markdown): Instructions and guidance for using the skill. Only loaded AFTER the skill triggers.
-
-##### Available Metadata Fields
-
-| Field            | Required | Description                                                                 |
-|------------------|----------|-----------------------------------------------------------------------------|
-| `name`           | Yes      | Skill name. Lowercase letters, numbers, and hyphens only (max 64 chars).    |
-| `description`    | Yes      | What the Skill does and when to use it (max 1024 chars).                    |
-| `allowed-tools`  | No       | Tools Claude can use without asking permission when this Skill is active.   |
-| `model`          | No       | Model to use when this Skill is active (e.g., `claude-sonnet-4-20250514`).  |
-| `context`        | No       | Set to `fork` to run in a forked sub-agent context.                         |
-| `agent`          | No       | Agent type to use with `context: fork` (e.g., `Explore`, `Plan`).           |
-| `hooks`          | No       | Define hooks scoped to this Skill's lifecycle (`PreToolUse`, `PostToolUse`, `Stop`). |
-| `user-invocable` | No       | Controls visibility in slash command menu. Defaults to `true`.              |
-
-##### String Substitutions
-
-| Variable               | Description                                                    |
-|------------------------|----------------------------------------------------------------|
-| `$ARGUMENTS`           | All arguments passed when invoking the Skill.                  |
-| `${CLAUDE_SESSION_ID}` | The current session ID. Useful for logging or session-specific files. |
+- **Frontmatter** (YAML): Contains `name` and `description` fields. These are the only fields that Claude reads to determine when the skill gets used, thus it is very important to be clear and comprehensive in describing what the skill is, and when it should be used.
+- **Body** (Markdown): Instructions and guidance for using the skill. Only loaded AFTER the skill triggers (if at all).
 
 #### Bundled Resources (optional)
 
@@ -336,10 +283,8 @@ When editing the (newly-generated or existing) skill, remember that the skill is
 
 Consult these helpful guides based on your skill's needs:
 
-- **Multi-step processes**: See [references/workflows.md](references/workflows.md) for sequential workflows and conditional logic
-- **Specific output formats or quality standards**: See [references/output-patterns.md](references/output-patterns.md) for template and example patterns
-- **Complete skill examples**: See [references/examples.md](references/examples.md) for various skill patterns (simple, multi-file, visual output, forked context, hooks)
-- **Troubleshooting**: See [references/troubleshooting.md](references/troubleshooting.md) for common issues and solutions
+- **Multi-step processes**: See references/workflows.md for sequential workflows and conditional logic
+- **Specific output formats or quality standards**: See references/output-patterns.md for template and example patterns
 
 These files contain established best practices for effective skill design.
 
@@ -357,34 +302,15 @@ Any example files and directories not needed for the skill should be deleted. Th
 
 ##### Frontmatter
 
-Write the YAML frontmatter with required and optional fields:
+Write the YAML frontmatter with `name` and `description`:
 
-**Required fields:**
-- `name`: The skill name (lowercase, hyphens, max 64 chars, should match directory name)
-- `description`: Primary triggering mechanism. Include:
-  - What the Skill does and specific triggers/contexts
-  - All "when to use" information (body is only loaded after triggering)
-  - Example: "Reviews pull requests for code quality. Use when reviewing PRs or checking code changes."
+- `name`: The skill name
+- `description`: This is the primary triggering mechanism for your skill, and helps Claude understand when to use the skill.
+  - Include both what the Skill does and specific triggers/contexts for when to use it.
+  - Include all "when to use" information here - Not in the body. The body is only loaded after triggering, so "When to Use This Skill" sections in the body are not helpful to Claude.
+  - Example description for a `docx` skill: "Comprehensive document creation, editing, and analysis with support for tracked changes, comments, formatting preservation, and text extraction. Use when Claude needs to work with professional documents (.docx files) for: (1) Creating new documents, (2) Modifying or editing content, (3) Working with tracked changes, (4) Adding comments, or any other document tasks"
 
-**Optional fields for advanced use cases:**
-
-```yaml
----
-name: secure-operations
-description: Perform operations with additional security checks
-allowed-tools: Read, Grep, Glob  # Restrict to read-only tools
-context: fork                     # Run in isolated sub-agent
-agent: Explore                    # Use Explore agent type
-hooks:
-  PreToolUse:
-    - matcher: "Bash"
-      hooks:
-        - type: command
-          command: "./scripts/security-check.sh $TOOL_INPUT"
-          once: true
-user-invocable: false             # Hide from slash menu
----
-```
+Do not include any other fields in YAML frontmatter.
 
 ##### Body
 
@@ -416,51 +342,6 @@ The packaging script will:
 2. **Package** the skill if validation passes, creating a .skill file named after the skill (e.g., `my-skill.skill`) that includes all files and maintains the proper directory structure for distribution. The .skill file is a zip file with a .skill extension.
 
 If validation fails, the script will report the errors and exit without creating a package. Fix any validation errors and run the packaging command again.
-
-### Step 5.5: Configure Advanced Features (Optional)
-
-#### Restrict Tool Access
-
-Use `allowed-tools` to limit which tools Claude can use when a Skill is active:
-
-```yaml
-allowed-tools: Read, Grep, Glob
-# Or YAML list:
-allowed-tools:
-  - Read
-  - Grep
-  - Glob
-```
-
-#### Run in Forked Context
-
-Use `context: fork` for complex multi-step operations that shouldn't clutter the main conversation:
-
-```yaml
-context: fork
-agent: Explore  # Optional: specify agent type
-```
-
-#### Skills and Subagents
-
-**Give a subagent access to Skills**: Subagents don't inherit Skills automatically. List them in the subagent's `skills` field:
-
-```yaml
-# .claude/agents/code-reviewer.md
----
-name: code-reviewer
-description: Review code for quality and best practices
-skills: pr-review, security-check
----
-```
-
-Note: Built-in agents (Explore, Plan, general-purpose) do not have access to your Skills.
-
-#### Distribute Skills
-
-- **Project Skills**: Commit `.claude/skills/` to version control
-- **Plugins**: Create a `skills/` directory in your plugin with Skill folders
-- **Managed**: Administrators can deploy Skills organization-wide through managed settings
 
 ### Step 6: Iterate
 
