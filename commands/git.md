@@ -37,6 +37,24 @@ personas: []
 
 ## Behavioral Flow
 
+### 0. Repository Detection (저장소 감지)
+
+**모든 모드 공통 - 실행 전 최우선 단계**
+
+1. **Message Analysis**: 사용자 메시지에서 폴더 경로 감지
+   - 상대 경로 패턴: `./folder`, `folder/subfolder`, `../parent`
+   - 절대 경로 패턴: `/root/path`, `C:\Windows\path`
+   - @ 참조 패턴: `@folder-name`
+   
+2. **Repository Check**: 감지된 폴더에 Git 저장소 존재 확인
+   - `test -d {folder}/.git` 실행
+   - 저장소 존재 시: 해당 폴더를 working directory로 설정
+   - 저장소 없음 시: 현재 디렉토리에서 작업 진행
+   
+3. **Working Directory Setup**:
+   - 저장소 감지 성공: `cd {folder}` 후 모든 git 명령 실행
+   - 감지 실패: 워크스페이스 루트에서 실행
+
 ### 일반 모드 (메시지 검증 후 커밋)
 
 1. **Analyze**: 입력된 커밋 메시지 파싱
@@ -123,6 +141,9 @@ Key behaviors:
 ## Tool Coordination
 
 - **Bash**: Git 명령 실행
+  - `test -d {folder}/.git`: 폴더의 Git 저장소 확인
+  - `cd {folder}`: 특정 저장소로 이동
+  - `pwd`: 현재 작업 디렉토리 확인
   - `git status --short`: 변경 파일 목록
   - `git diff --stat`: 변경 통계
   - `git log --oneline -5`: 최근 커밋
@@ -136,6 +157,8 @@ Key behaviors:
 
 ## Key Patterns
 
+- **폴더 감지**: 메시지에서 경로 추출 → 저장소 확인 → working directory 설정
+- **멀티 저장소**: 여러 저장소 중 지정된 저장소에서 작업
 - **일반 모드**: 메시지 입력 → 형식 검증 → 커밋 실행
 - **계획 모드**: Git 상태 분석 → 변경사항 분류 → 옵션 생성 → 사용자 선택 → 커밋 실행
 - **형식 검증**: `<type>(<scope>): <subject>` 패턴 확인
@@ -412,6 +435,116 @@ git log --oneline -1
 
 # CI/CD 설정
 /git "ci(배포): GitHub Actions 워크플로우 추가"
+
+# 폴더 지정 커밋
+/git "portal 폴더의 변경사항 커밋" --task
+
+# @ 참조로 폴더 지정
+/git "@portal feat(인증): 로그인 개선"
+
+# 하위 폴더 저장소
+/git "./packages/frontend fix(UI): 버튼 스타일 수정"
+```
+
+### 예제 7: 폴더 감지 및 저장소 작업
+
+```
+/git "@portal feat(인증): JWT 토큰 갱신 추가"
+
+# 실행 과정:
+# 0. Repository Detection
+#    - 메시지 파싱: "@portal" 감지
+#    - 저장소 확인: test -d ./portal/.git
+#    - 결과: ✅ 저장소 발견
+#    - 작업 디렉토리: ./portal 설정
+# 1. 형식 검증: ✅ 통과
+# 2. cd portal && git status 확인
+# 3. cd portal && git add . 실행
+# 4. cd portal && git commit -m "feat(인증): JWT 토큰 갱신 추가" 실행
+# 5. 결과 보고
+
+# 예상 출력:
+## 📂 저장소 감지
+
+**감지된 경로**: @portal → ./portal
+**저장소 상태**: ✅ Git 저장소 확인
+**작업 디렉토리**: /root/documents/lumir-portal/portal
+
+## ✅ 커밋 완료
+
+**커밋 해시**: abc1234
+**메시지**: feat(인증): JWT 토큰 갱신 추가
+**변경 파일**: 3개
+**저장소**: ./portal
+
+## 다음 단계
+
+- `cd portal && git push` 로 원격 저장소에 푸시
+- PR 생성을 위해 `cd portal && gh pr create` 실행
+```
+
+### 예제 8: 멀티 저장소 환경에서 작업
+
+```
+# 프로젝트 구조:
+# /root/documents/lumir-portal/
+# ├── .git (루트 저장소)
+# ├── portal/
+# │   └── .git (portal 저장소)
+# └── backend/
+#     └── .git (backend 저장소)
+
+/git "./backend fix(API): 사용자 조회 엔드포인트 수정" --task
+
+# 실행 과정:
+# 0. Repository Detection
+#    - 메시지 파싱: "./backend" 감지
+#    - 저장소 확인: test -d ./backend/.git
+#    - 결과: ✅ 저장소 발견
+#    - 작업 디렉토리: ./backend 설정
+# 1. Git 상태 분석 (./backend 내)
+# 2. 변경사항 분류
+# 3. 커밋 옵션 생성
+# 4. 사용자 선택
+# 5. 커밋 실행
+
+# 예상 출력:
+## 📂 저장소 감지
+
+**감지된 경로**: ./backend
+**저장소 상태**: ✅ Git 저장소 확인
+**작업 디렉토리**: /root/documents/lumir-portal/backend
+
+## 📊 Git 상태 분석 (./backend)
+
+**변경된 파일**: 2개
+- src/api/user.endpoint.ts (수정)
+- tests/api/user.test.ts (수정)
+
+**변경 유형**: 버그 수정 (fix)
+**Scope**: API
+
+## 💡 추천 커밋 옵션
+
+### 옵션 1 (추천) - 단일 커밋
+```
+fix(API): 사용자 조회 엔드포인트 수정
+
+사용자 ID로 조회 시 null 체크 로직을 추가하여
+잘못된 요청에 대한 에러 처리를 개선합니다.
+
+- UserEndpoint에 유효성 검사 추가
+- 테스트 케이스 보강
+```
+
+→ 선택: [1/수정/취소]
+
+## ✅ 커밋 완료
+
+**커밋 해시**: def5678
+**메시지**: fix(API): 사용자 조회 엔드포인트 수정
+**변경 파일**: 2개
+**저장소**: ./backend
 ```
 
 ## Boundaries
@@ -430,6 +563,10 @@ git log --oneline -1
 - 저장소 상태, 파일 내용, Git 히스토리만 기반으로 분석
 - 추적된 변경사항만 커밋 메시지에 포함
 - git-expert 스킬 참조하여 일관된 커밋 메시지 생성
+- 사용자 메시지에서 폴더 경로 자동 감지
+- 감지된 폴더의 Git 저장소 존재 여부 확인
+- 저장소가 있는 폴더로 자동 이동하여 작업 수행
+- 멀티 저장소 환경 지원
 
 **Will Not:**
 
@@ -439,6 +576,7 @@ git log --oneline -1
 - 대화 컨텍스트나 이전 대화 내용을 커밋 분석에 반영
 - Git이 추적하지 않는 파일이나 변경사항을 커밋 메시지에 포함
 - UTF-8 인코딩 설정 없이 Windows에서 Git 명령 실행
-- Git 저장소가 아닌 디렉토리에서 작업 수행
+- Git 저장소가 아닌 디렉토리에서 작업 수행 (폴더 지정 시에도 저장소 확인)
+- 존재하지 않는 폴더 경로로 이동 시도
 - Conventional Commits 형식을 위반하는 커밋 메시지 생성
 - 커밋 메시지 body나 footer를 자동 생성 (사용자가 제공하지 않은 경우)
