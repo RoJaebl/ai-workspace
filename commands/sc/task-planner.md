@@ -78,7 +78,7 @@ Key behaviors:
 ## Tool Coordination
 - **AskQuestion**: 인자 없이 실행 시 사용자에게 작업 내용 질문
 - **Read**: 프로젝트 파일 및 컨텍스트 분석
-- **Write**: `.cursor/plans/YYYYMMDD-HHMMSS-{title}.plan.md` 형식으로 계획서 저장
+- **Write**: `.cursor/plans/{title}_{hash}.plan.md` 형식으로 계획서 저장
 - **TodoWrite**: 주요 작업 항목을 TODO 리스트에 등록
 - **Sequential MCP Tools**: 체계적 분석 및 계획 수립
 - **Serena MCP Tools**: 프로젝트 컨텍스트 및 심볼 분석
@@ -96,7 +96,7 @@ Key behaviors:
 ```
 /sc:task-planner 사용자 인증 시스템 구축
 # "사용자 인증 시스템 구축"을 5단계로 분석하여 계획서 작성
-# 화면에 출력 + .cursor/plans/20260123-143022-user-auth-system.plan.md 저장
+# 화면에 출력 + .cursor/plans/사용자_인증_시스템_구축_a1b2c3d4.plan.md 저장
 ```
 
 ### 대화형 사용 - 메시지 없이 실행
@@ -242,11 +242,15 @@ LOOP (분석 완료될 때까지 반복):
 ### 4단계: 파일 저장
 
 Write 도구 사용:
-- 경로: `.cursor/plans/YYYYMMDD-HHMMSS-{sanitized-title}.plan.md`
+- 경로: `.cursor/plans/{sanitized-title}_{hash}.plan.md`
 - 파일명 생성 규칙:
-  - 현재 시각을 YYYYMMDD-HHMMSS 형식으로
-  - 작업명을 kebab-case로 변환 (공백 → 하이픈, 특수문자 제거)
-  - 예: `20260123-143022-user-auth-system.plan.md`
+  - 작업명을 snake_case로 변환 (공백 → 언더스코어, 특수문자 제거)
+  - 한글 작업명은 그대로 유지하고 공백만 언더스코어로 변환
+  - 끝에 8자리 16진수 해시 추가 (무작위 생성 또는 타임스탬프 기반)
+  - 예시:
+    - 영문: `user_auth_system_a1b2c3d4.plan.md`
+    - 한글: `사용자_인증_시스템_구축_f5e6d7c8.plan.md`
+    - 혼합: `brochure_api_error_fix_ab1ee0e2.plan.md`
 
 ### 5단계: TODO 항목 등록
 
@@ -260,7 +264,7 @@ TodoWrite 도구 사용:
 \`\`\`
 ✅ 계획서 작성 완료!
 
-📄 **파일 저장**: `.cursor/plans/{filename}.plan.md`
+📄 **파일 저장**: `.cursor/plans/{title}_{hash}.plan.md`
 📋 **TODO 등록**: {N}개 작업 항목 등록됨
 
 **다음 단계**:
