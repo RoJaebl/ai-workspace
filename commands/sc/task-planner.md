@@ -61,7 +61,7 @@ personas: [architect, analyzer]
 Key behaviors:
 - 5단계 방법론을 일관되게 적용하여 체계적 계획 수립
 - MCP 통합으로 프로젝트 컨텍스트 기반 심층 분석
-- 계획서를 화면에 출력하고 `.cursor/plans/` 디렉토리에 파일로 저장
+- 계획서를 화면에 출력하고 사용자 Cursor 디렉토리의 `plans/` 폴더에 파일로 저장 (Bash로 환경 변수 자동 탐지)
 - 주요 작업 항목은 TODO로 자동 등록하여 진행 관리
 
 ## MCP Integration
@@ -78,7 +78,7 @@ Key behaviors:
 ## Tool Coordination
 - **AskQuestion**: 인자 없이 실행 시 사용자에게 작업 내용 질문
 - **Read**: 프로젝트 파일 및 컨텍스트 분석
-- **Write**: `.cursor/plans/{title}_{hash}.plan.md` 형식으로 계획서 저장
+- **Write**: `{CURSOR_PATH}/plans/{title}_{hash}.plan.md` 형식으로 계획서 저장 (Bash로 경로 탐지)
 - **TodoWrite**: 주요 작업 항목을 TODO 리스트에 등록
 - **Sequential MCP Tools**: 체계적 분석 및 계획 수립
 - **Serena MCP Tools**: 프로젝트 컨텍스트 및 심볼 분석
@@ -86,7 +86,7 @@ Key behaviors:
 ## Key Patterns
 - **5단계 워크플로우**: 확인 → 분석 → 계획 → 작업 → 검증 단계로 체계화
 - **반복 분석 패턴**: 분석 → 영향 추적 → 새로운 발견 → 재분석 사이클을 완전히 파악될 때까지 반복
-- **이중 출력**: 화면 출력 (마크다운) + 파일 저장 (`.cursor/plans/*.plan.md`)
+- **이중 출력**: 화면 출력 (마크다운) + 파일 저장 (`{CURSOR_PATH}/plans/*.plan.md`)
 - **TODO 통합**: 계획서의 주요 작업을 TODO 항목으로 자동 등록
 - **컨텍스트 기반**: MCP 통합으로 프로젝트 구조를 반영한 현실적 계획 수립
 
@@ -96,7 +96,7 @@ Key behaviors:
 ```
 /sc:task-planner 사용자 인증 시스템 구축
 # "사용자 인증 시스템 구축"을 5단계로 분석하여 계획서 작성
-# 화면에 출력 + .cursor/plans/사용자_인증_시스템_구축_a1b2c3d4.plan.md 저장
+# 화면에 출력 + {탐지된 Cursor 경로}/plans/사용자_인증_시스템_구축_a1b2c3d4.plan.md 저장
 ```
 
 ### 대화형 사용 - 메시지 없이 실행
@@ -239,10 +239,125 @@ LOOP (분석 완료될 때까지 반복):
 **다음 단계**: 이 계획을 검토하고 승인되면 작업을 시작하세요.
 \`\`\`
 
+### 3.5단계: Cursor 경로 탐지 및 디렉토리 구성
+
+**단계 1: Cursor 환경 변수 확인 (Bash 사용)**
+
+Shell 도구로 Cursor가 설정한 환경 변수를 확인:
+
+\`\`\`bash
+# Cursor 사용자 데이터 경로 확인 (우선순위 1)
+CURSOR_PATH=$(echo $CURSOR_USER_DATA)
+
+# CURSOR_USER_DATA가 없으면 CURSOR_HOME 확인 (우선순위 2)
+if [ -z "$CURSOR_PATH" ]; then
+  CURSOR_PATH=$(echo $CURSOR_HOME)
+fi
+
+# Cursor 환경 변수가 없으면 XDG_CONFIG_HOME 확인 (Linux 표준, 우선순위 3)
+if [ -z "$CURSOR_PATH" ] && [ -n "$XDG_CONFIG_HOME" ]; then
+  CURSOR_PATH="$XDG_CONFIG_HOME/cursor"
+fi
+
+# 모든 Cursor 환경 변수가 없으면 OS별 기본 홈 사용 (우선순위 4)
+if [ -z "$CURSOR_PATH" ]; then
+  # Linux/macOS/WSL
+  CURSOR_PATH="$HOME/.cursor"
+  
+  # Windows (PowerShell에서 실행 시)
+  # CURSOR_PATH="$env:USERPROFILE\.cursor"
+fi
+
+# 최종 plans 디렉토리 경로
+PLANS_DIR="$CURSOR_PATH/plans"
+echo $PLANS_DIR
+\`\`\`
+
+**단계 2: 디렉토리 존재 확인 및 생성**
+
+\`\`\`bash
+# Linux/macOS/WSL
+mkdir -p "$PLANS_DIR"
+
+# Windows (PowerShell)
+New-Item -ItemType Directory -Force -Path "$PLANS_DIR"
+\`\`\`
+
+**단계 3: Claude 실행 로직**
+
+1. **Shell 도구로 경로 탐지**:
+   \`\`\`bash
+   # 경로 탐지 스크립트 실행
+   CURSOR_PATH=${CURSOR_USER_DATA:-${CURSOR_HOME:-${XDG_CONFIG_HOME:+$XDG_CONFIG_HOME/cursor}}}
+   CURSOR_PATH=${CURSOR_PATH:-$HOME/.cursor}
+   PLANS_DIR="$CURSOR_PATH/plans"
+   echo $PLANS_DIR
+   \`\`\`
+
+2. **Shell 도구로 디렉토리 생성**:
+   \`\`\`bash
+   mkdir -p "$PLANS_DIR"
+   \`\`\`
+
+3. **경로를 변수에 저장**: Shell 명령어 출력을 파싱하여 `PLANS_DIR` 변수에 저장
+
+4. **Write 도구로 파일 저장**:
+   - 경로: `{PLANS_DIR}/{sanitized-title}_{hash}.plan.md`
+   - 절대 경로 사용
+
+**경로 탐지 결과 예시:**
+
+| 환경 | 탐지된 경로 |
+|---|---|
+| Cursor 환경 변수 있음 | `/path/to/cursor-data/plans/` |
+| Linux/WSL (기본) | `/home/username/.cursor/plans/` |
+| macOS (기본) | `/Users/username/.cursor/plans/` |
+| Windows (기본) | `C:\Users\username\.cursor\plans\` |
+| 워크스페이스 폴백 | `/workspace/.cursor/plans/` |
+
 ### 4단계: 파일 저장
 
-Write 도구 사용:
-- 경로: `.cursor/plans/{sanitized-title}_{hash}.plan.md`
+**전제 조건: Cursor 경로 탐지 및 디렉토리 생성**
+
+Shell 도구로 Bash 스크립트 실행하여 Cursor 경로 탐지:
+\`\`\`bash
+# 1. Cursor 환경 변수 확인 (우선순위 높음)
+CURSOR_PATH=${CURSOR_USER_DATA:-${CURSOR_HOME:-${XDG_CONFIG_HOME:+$XDG_CONFIG_HOME/cursor}}}
+
+# 2. 환경 변수가 없으면 OS별 기본 홈 디렉토리 사용
+CURSOR_PATH=${CURSOR_PATH:-$HOME/.cursor}
+
+# 3. plans 디렉토리 경로 구성
+PLANS_DIR="$CURSOR_PATH/plans"
+
+# 4. 디렉토리 생성 (없으면 생성)
+mkdir -p "$PLANS_DIR"
+
+# 5. 경로 출력 (Claude가 파싱)
+echo "$PLANS_DIR"
+\`\`\`
+
+**Windows (PowerShell) 환경:**
+\`\`\`powershell
+# Cursor 경로 탐지
+$CURSOR_PATH = if ($env:CURSOR_USER_DATA) { $env:CURSOR_USER_DATA } 
+               elseif ($env:CURSOR_HOME) { $env:CURSOR_HOME } 
+               else { "$env:USERPROFILE\.cursor" }
+
+# plans 디렉토리 생성
+$PLANS_DIR = "$CURSOR_PATH\plans"
+New-Item -ItemType Directory -Force -Path $PLANS_DIR
+Write-Output $PLANS_DIR
+\`\`\`
+
+**Write 도구 사용:**
+
+- 경로: `{PLANS_DIR}/{sanitized-title}_{hash}.plan.md`
+- 탐지된 경로 예시:
+  - Cursor 환경 변수 사용: `/custom/cursor/path/plans/작업명_12345678.plan.md`
+  - Linux/WSL 기본: `/home/username/.cursor/plans/작업명_12345678.plan.md`
+  - macOS 기본: `/Users/username/.cursor/plans/작업명_12345678.plan.md`
+  - Windows 기본: `C:\Users\username\.cursor\plans\작업명_12345678.plan.md`
 - 파일명 생성 규칙:
   - 작업명을 snake_case로 변환 (공백 → 언더스코어, 특수문자 제거)
   - 한글 작업명은 그대로 유지하고 공백만 언더스코어로 변환
@@ -251,6 +366,14 @@ Write 도구 사용:
     - 영문: `user_auth_system_a1b2c3d4.plan.md`
     - 한글: `사용자_인증_시스템_구축_f5e6d7c8.plan.md`
     - 혼합: `brochure_api_error_fix_ab1ee0e2.plan.md`
+
+**경로 구성 로직:**
+
+1. Shell 도구로 Bash 스크립트 실행 (위의 경로 탐지 스크립트)
+2. 스크립트 출력을 파싱하여 `PLANS_DIR` 변수에 저장
+3. 경로 조합: `{PLANS_DIR}/{파일명}`
+4. Write 도구에 절대 경로 전달
+5. 실패 시 워크스페이스 `.cursor/plans/`로 폴백
 
 ### 5단계: TODO 항목 등록
 
@@ -264,8 +387,24 @@ TodoWrite 도구 사용:
 \`\`\`
 ✅ 계획서 작성 완료!
 
-📄 **파일 저장**: `.cursor/plans/{title}_{hash}.plan.md`
+📄 **파일 저장**: `{실제_탐지된_경로}/{title}_{hash}.plan.md`
 📋 **TODO 등록**: {N}개 작업 항목 등록됨
+
+**저장 위치 탐지 결과**:
+- Cursor 환경 변수 감지: {탐지된 경로 또는 "없음"}
+- 최종 저장 경로: {절대 경로}
+
+**경로 탐지 우선순위**:
+1. `$CURSOR_USER_DATA` 환경 변수
+2. `$CURSOR_HOME` 환경 변수
+3. `$XDG_CONFIG_HOME/cursor` (Linux 표준)
+4. `$HOME/.cursor` (기본 홈 디렉토리)
+5. `워크스페이스/.cursor` (폴백)
+
+**OS별 예상 경로**:
+- Linux/WSL: `/home/{username}/.cursor/plans/{title}_{hash}.plan.md`
+- macOS: `/Users/{username}/.cursor/plans/{title}_{hash}.plan.md`
+- Windows: `C:\Users\{username}\.cursor\plans\{title}_{hash}.plan.md`
 
 **다음 단계**:
 1. 계획서를 검토하고 필요시 수정
@@ -275,7 +414,9 @@ TodoWrite 도구 사용:
 
 ---
 
-**버전**: 1.1.0  
+**버전**: 1.2.0  
 **최종 업데이트**: 2026-01-23  
 **작성자**: SuperClaude Commands System  
-**변경 이력**: v1.1.0 - 분석 단계 반복 로직 추가 (완전한 영향 전파 분석)
+**변경 이력**:
+- v1.2.0 - Bash 기반 Cursor 환경 변수 탐지 로직 추가 (사용자별 경로 자동 구성)
+- v1.1.0 - 분석 단계 반복 로직 추가 (완전한 영향 전파 분석)
