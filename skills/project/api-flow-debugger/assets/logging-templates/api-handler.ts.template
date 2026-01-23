@@ -1,0 +1,248 @@
+/**
+ * API Handler Logging Template
+ * 
+ * Add these logging statements to your API route handlers (route.ts)
+ * to trace authentication, request parsing, and service calls.
+ * 
+ * Location: app/api/(cms)/**/(domain)/*/route.ts
+ */
+
+import { NextRequest, NextResponse } from "next/server";
+import { {Domain}Module } from "@/app/api/_backend/modules/.../{domain}.module";
+import { {Domain}Adapter } from "@/app/api/_backend/modules/.../types/{domain}.adapter";
+import { getCmsAccessTokenFromCookies } from "@/lib/auth-utils.server";
+
+export const dynamic = "force-dynamic";
+
+// ============================================
+// Template for GET Handler (List)
+// ============================================
+
+export async function GET(request: NextRequest) {
+  // 1. Log request reception
+  console.log('[API Handler] GET 요청 수신:', {
+    url: request.url,
+    method: request.method,
+    searchParams: request.nextUrl.searchParams.toString(),
+    timestamp: new Date().toISOString(),
+  });
+
+  // 2. Extract and check authentication token
+  const cmsToken = getCmsAccessTokenFromCookies();
+
+  console.log('[API Handler] 인증 토큰 확인:', {
+    hasToken: !!cmsToken,
+    tokenLength: cmsToken?.length,
+  });
+
+  // 3. Validate authentication
+  if (!cmsToken) {
+    console.warn('[API Handler] 인증 토큰 없음 - 401 반환');
+    return NextResponse.json(
+      { success: false, message: "CMS 인증이 필요합니다." },
+      { status: 401 },
+    );
+  }
+
+  // 4. Call Backend Service
+  console.log('[API Handler] Backend Service 호출 시작');
+  const service = {Domain}Module.getInstance().get{Domain}Service(cmsToken);
+  const result = await service.get{Domain}s();
+
+  // 5. Log service result
+  console.log('[API Handler] Backend Service 호출 완료:', {
+    success: result.success,
+    hasData: !!result.data,
+    itemCount: result.data?.items?.length,
+    error: result.message,
+  });
+
+  // 6. Return response
+  return NextResponse.json(result, {
+    status: result.success ? 200 : 500,
+  });
+}
+
+// ============================================
+// Template for POST Handler (Create)
+// ============================================
+
+export async function POST(request: NextRequest) {
+  // 1. Log request
+  console.log('[API Handler] POST 요청 수신:', {
+    url: request.url,
+    contentType: request.headers.get('content-type'),
+  });
+
+  // 2. Check authentication
+  const cmsToken = getCmsAccessTokenFromCookies();
+
+  console.log('[API Handler] 인증:', {
+    hasToken: !!cmsToken,
+  });
+
+  if (!cmsToken) {
+    console.warn('[API Handler] 인증 실패 - 401 반환');
+    return NextResponse.json(
+      { success: false, message: "CMS 인증이 필요합니다." },
+      { status: 401 },
+    );
+  }
+
+  // 3. Parse request body
+  const body = await request.json();
+
+  console.log('[API Handler] 요청 바디:', {
+    bodyKeys: Object.keys(body),
+    bodySize: JSON.stringify(body).length,
+    hasTranslations: !!body.translations,
+    hasAttachments: !!body.attachments,
+  });
+
+  // 4. Convert with Adapter (if needed)
+  console.log('[API Handler] Adapter 변환 시작');
+  const createDto = {Domain}Adapter.toCreate{Domain}Request(body);
+
+  console.log('[API Handler] Adapter 변환 완료:', {
+    dtoKeys: Object.keys(createDto),
+  });
+
+  // 5. Call Backend Service
+  console.log('[API Handler] Backend Service create 호출');
+  const service = {Domain}Module.getInstance().get{Domain}Service(cmsToken);
+  const result = await service.create{Domain}(createDto);
+
+  // 6. Log result
+  console.log('[API Handler] 생성 결과:', {
+    success: result.success,
+    createdId: result.data?.id,
+    error: result.message,
+  });
+
+  // 7. Return response with appropriate status
+  return NextResponse.json(result, {
+    status: result.success ? 201 : 500,
+  });
+}
+
+// ============================================
+// Template for PATCH Handler (Update)
+// ============================================
+
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  console.log('[API Handler] PATCH 요청 수신:', {
+    url: request.url,
+    id: params.id,
+  });
+
+  // Authentication
+  const cmsToken = getCmsAccessTokenFromCookies();
+
+  console.log('[API Handler] 인증:', { hasToken: !!cmsToken });
+
+  if (!cmsToken) {
+    console.warn('[API Handler] 인증 실패');
+    return NextResponse.json(
+      { success: false, message: "CMS 인증이 필요합니다." },
+      { status: 401 },
+    );
+  }
+
+  // Parse body
+  const body = await request.json();
+
+  console.log('[API Handler] 수정 데이터:', {
+    id: params.id,
+    bodyKeys: Object.keys(body),
+  });
+
+  // Convert and call service
+  console.log('[API Handler] Adapter 변환');
+  const updateDto = {Domain}Adapter.toUpdate{Domain}Request(body);
+
+  console.log('[API Handler] Backend Service update 호출');
+  const service = {Domain}Module.getInstance().get{Domain}Service(cmsToken);
+  const result = await service.update{Domain}(params.id, updateDto);
+
+  console.log('[API Handler] 수정 결과:', {
+    success: result.success,
+    updatedId: params.id,
+  });
+
+  return NextResponse.json(result, {
+    status: result.success ? 200 : 500,
+  });
+}
+
+// ============================================
+// Template for DELETE Handler
+// ============================================
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  console.log('[API Handler] DELETE 요청 수신:', {
+    url: request.url,
+    id: params.id,
+  });
+
+  // Authentication
+  const cmsToken = getCmsAccessTokenFromCookies();
+
+  console.log('[API Handler] 인증:', { hasToken: !!cmsToken });
+
+  if (!cmsToken) {
+    console.warn('[API Handler] 인증 실패');
+    return NextResponse.json(
+      { success: false, message: "CMS 인증이 필요합니다." },
+      { status: 401 },
+    );
+  }
+
+  // Call service
+  console.log('[API Handler] Backend Service delete 호출:', {
+    id: params.id,
+  });
+
+  const service = {Domain}Module.getInstance().get{Domain}Service(cmsToken);
+  const result = await service.delete{Domain}(params.id);
+
+  console.log('[API Handler] 삭제 결과:', {
+    success: result.success,
+    deletedId: params.id,
+  });
+
+  return NextResponse.json(result, {
+    status: result.success ? 200 : 500,
+  });
+}
+
+// ============================================
+// Usage Notes
+// ============================================
+
+/*
+1. Replace placeholders:
+   - {Domain}: Type name (e.g., Brochure)
+   - {domain}: Path segment (e.g., brochure)
+
+2. Status codes:
+   - 200: Success (GET, PATCH, DELETE)
+   - 201: Created (POST)
+   - 401: Unauthorized
+   - 500: Server error
+
+3. Security:
+   - Log !!token not token value
+   - Log body keys not full body (may contain sensitive data)
+   - Consider data size when logging
+
+4. Debugging:
+   - Add request.headers logging if needed
+   - Log timing with performance.now()
+   - Add try-catch for better error context
+*/

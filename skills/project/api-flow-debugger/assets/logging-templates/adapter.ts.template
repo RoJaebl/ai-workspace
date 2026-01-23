@@ -1,0 +1,321 @@
+/**
+ * Adapter Logging Template
+ * 
+ * Add these logging statements to your Adapter methods
+ * to trace DTO↔Model conversions and field mappings.
+ * 
+ * Location: app/api/_backend/modules/**/{domain}/types/{domain}.adapter.ts
+ */
+
+import type {
+  {Domain}ResponseDto,
+  {Domain}ListResponseDto,
+  {Domain}TranslationDto,
+  {Domain}AttachmentDto,
+  {Domain}CategoryDto,
+  Create{Domain}Dto,
+  Update{Domain}Dto,
+} from "./{domain}.dto";
+import type {
+  {Domain}Model,
+  {Domain}sModel,
+  {Domain}TranslationModel,
+  {Domain}AttachmentModel,
+  {Domain}CategoryModel,
+  Create{Domain}Model,
+  Update{Domain}Model,
+} from "@/app/(planning)/plan/(cms)/cms/(admin)/homepage/{domain}/_types/{domain}.model";
+
+export class {Domain}Adapter {
+  // ============================================
+  // Template for Response Conversion (DTO → Model)
+  // ============================================
+
+  /**
+   * Convert single item response DTO → Model
+   */
+  static from{Domain}Response(dto: {Domain}ResponseDto): {Domain}Model {
+    // 1. Log conversion start
+    console.log('[Adapter] DTO → Model 변환 시작:', {
+      method: 'from{Domain}Response',
+      dtoId: dto.id,
+      dtoKeys: Object.keys(dto),
+      translationCount: dto.translations?.length,
+      attachmentCount: dto.attachments?.length,
+      hasCategory: !!dto.category,
+    });
+
+    // 2. Find Korean translation (with fallback)
+    const koTranslation = dto.translations?.find(t => t.languageId.includes("ko"));
+
+    // 3. Convert DTO → Model with field mappings
+    const model: {Domain}Model = {
+      id: dto.id,
+      code: "{domain}",
+      
+      // ✅ Field mapping: createdBy → authorId
+      authorId: dto.createdBy ?? "",
+      
+      // ✅ Default value for missing field
+      authorName: "",
+      
+      createdAt: dto.createdAt,
+      updatedAt: dto.updatedAt,
+      
+      // ✅ Default for missing field
+      publishedAt: undefined,
+      
+      order: dto.order,
+      isPublic: dto.isPublic,
+      
+      // ✅ Fallback chain for title
+      title: koTranslation?.title 
+             ?? dto.translations[0]?.title 
+             ?? "",
+      
+      // ✅ Convert nested arrays
+      translations: dto.translations && dto.translations.length > 0
+        ? this._toTranslationModelArray(dto.translations, dto.id)
+        : undefined,
+      
+      attachments: dto.attachments && dto.attachments.length > 0
+        ? this._toAttachmentModelArray(dto.attachments, dto.id)
+        : undefined,
+      
+      // ✅ Convert nested object
+      category: dto.category
+        ? this._toCategoryModel(dto.category)
+        : undefined,
+    };
+
+    // 4. Log conversion result
+    console.log('[Adapter] DTO → Model 변환 완료:', {
+      modelId: model.id,
+      modelKeys: Object.keys(model),
+      translationCount: model.translations?.length,
+      attachmentCount: model.attachments?.length,
+      hasCategory: !!model.category,
+      fieldMappings: {
+        'createdBy → authorId': { dto: dto.createdBy, model: model.authorId },
+      },
+    });
+
+    return model;
+  }
+
+  /**
+   * Convert list response DTO → Model
+   */
+  static from{Domain}sResponse(dto: {Domain}ListResponseDto): {Domain}sModel {
+    console.log('[Adapter] List DTO → Model 변환 시작:', {
+      method: 'from{Domain}sResponse',
+      itemCount: dto.items?.length,
+      page: dto.page,
+      limit: dto.limit,
+    });
+
+    // ✅ Handle empty/invalid response
+    if (!dto || !Array.isArray(dto.items) || dto.items.length === 0) {
+      console.warn('[Adapter] 빈 응답 처리 - 기본값 반환');
+      return {
+        items: [],
+        page: 1,
+        size: 20,  // ✅ Field mapping: limit → size
+        total: 0,
+        totalPages: 0,
+      };
+    }
+
+    const model: {Domain}sModel = {
+      items: dto.items.map((item) => this._fromListItemResponse(item)),
+      page: dto.page,
+      size: dto.limit,  // ✅ Field mapping: limit → size
+      total: dto.total,
+      totalPages: dto.totalPages,
+    };
+
+    console.log('[Adapter] List DTO → Model 변환 완료:', {
+      itemCount: model.items.length,
+      pagination: { page: model.page, size: model.size, total: model.total },
+      fieldMappings: {
+        'limit → size': { dto: dto.limit, model: model.size },
+      },
+    });
+
+    return model;
+  }
+
+  // ============================================
+  // Template for Request Conversion (Model → DTO)
+  // ============================================
+
+  /**
+   * Convert Create Model → DTO
+   */
+  static toCreate{Domain}Request(model: Create{Domain}Model): Create{Domain}Dto {
+    console.log('[Adapter] Model → DTO 변환 시작:', {
+      method: 'toCreate{Domain}Request',
+      modelKeys: Object.keys(model),
+      translationCount: model.translations?.length,
+      attachmentCount: model.attachments?.length,
+    });
+
+    const dto: Create{Domain}Dto = {
+      code: model.code,
+      order: model.order,
+      isPublic: model.isPublic,
+      
+      // ✅ Convert nested translations
+      translations: model.translations?.map(t => ({
+        languageId: t.languageId,
+        title: t.title,
+        content: t.description,  // ✅ Field mapping: description → content
+      })),
+      
+      // ✅ Convert nested attachments
+      attachments: model.attachments?.map(a => ({
+        name: a.fileName,      // ✅ Field mapping: fileName → name
+        url: a.fileUrl,        // ✅ Field mapping: fileUrl → url
+        size: a.fileSize,      // ✅ Field mapping: fileSize → size
+        mimeType: a.mimeType,
+        languageId: a.languageId,
+      })),
+      
+      categoryId: model.category?.id,
+    };
+
+    console.log('[Adapter] Model → DTO 변환 완료:', {
+      dtoKeys: Object.keys(dto),
+      translationCount: dto.translations?.length,
+      fieldMappings: {
+        'description → content': 'applied to translations',
+        'fileName → name': 'applied to attachments',
+        'fileUrl → url': 'applied to attachments',
+      },
+    });
+
+    return dto;
+  }
+
+  /**
+   * Convert Update Model → DTO
+   */
+  static toUpdate{Domain}Request(model: Update{Domain}Model): Update{Domain}Dto {
+    console.log('[Adapter] Update Model → DTO 변환:', {
+      method: 'toUpdate{Domain}Request',
+      modelKeys: Object.keys(model),
+    });
+
+    const dto: Update{Domain}Dto = {
+      // Only include changed fields
+      ...(model.isPublic !== undefined && { isPublic: model.isPublic }),
+      ...(model.order !== undefined && { order: model.order }),
+      ...(model.translations && {
+        translations: model.translations.map(t => ({
+          languageId: t.languageId,
+          title: t.title,
+          content: t.description,  // ✅ Field mapping
+        })),
+      }),
+    };
+
+    console.log('[Adapter] Update DTO 생성 완료:', {
+      dtoKeys: Object.keys(dto),
+    });
+
+    return dto;
+  }
+
+  // ============================================
+  // Helper Methods for Nested Conversions
+  // ============================================
+
+  /**
+   * Convert Attachment DTO → Model
+   */
+  private static _toAttachmentModel(
+    dto: {Domain}AttachmentDto,
+    documentId: string
+  ): {Domain}AttachmentModel {
+    console.log('[Adapter] Attachment DTO → Model:', {
+      input: {
+        id: dto.id,
+        name: dto.name,          // → fileName
+        url: dto.url,            // → fileUrl
+        size: dto.size,          // → fileSize
+      },
+    });
+
+    return {
+      id: dto.id,
+      documentId,
+      fileName: dto.name,      // ✅ Field mapping
+      fileUrl: dto.url,        // ✅ Field mapping
+      fileSize: dto.size,      // ✅ Field mapping
+      mimeType: dto.mimeType,
+      languageId: dto.languageId,
+      uploadedAt: dto.uploadedAt,
+    };
+  }
+
+  /**
+   * Convert Attachment DTO array → Model array
+   */
+  private static _toAttachmentModelArray(
+    dtos: {Domain}AttachmentDto[] | undefined,
+    documentId: string
+  ): {Domain}AttachmentModel[] | undefined {
+    if (!dtos || dtos.length === 0) {
+      return undefined;  // ✅ Consistent empty handling
+    }
+    return dtos.map(dto => this._toAttachmentModel(dto, documentId));
+  }
+
+  /**
+   * Convert Category DTO → Model
+   */
+  private static _toCategoryModel(
+    dto: {Domain}CategoryDto
+  ): {Domain}CategoryModel {
+    return {
+      id: dto.id,
+      code: "{domain}",
+      name: dto.name,
+      description: dto.description ?? undefined,
+      order: dto.order,
+      isPublic: dto.isActive,  // ✅ Field mapping: isActive → isPublic
+      createdAt: dto.createdAt,
+      updatedAt: dto.updatedAt,
+    };
+  }
+}
+
+// ============================================
+// Usage Notes
+// ============================================
+
+/*
+1. Known field mappings to log:
+   - name ↔ fileName
+   - url ↔ fileUrl
+   - size ↔ fileSize
+   - isActive ↔ isPublic
+   - createdBy ↔ authorId
+   - description ↔ content
+   - limit ↔ size
+
+2. Log detail levels:
+   - Minimal: Log method name and counts
+   - Standard: Log keys and mappings applied
+   - Detailed: Log full objects (debugging only)
+
+3. Empty handling:
+   - Return undefined for optional arrays when empty
+   - Provide default structure for required objects
+   - Log when using defaults/fallbacks
+
+4. Performance:
+   - Avoid logging full objects in production
+   - Use conditional logging for large arrays
+   - Consider log level environment variable
+*/

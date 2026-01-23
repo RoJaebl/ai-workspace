@@ -1,0 +1,245 @@
+/**
+ * Frontend Service Logging Template
+ * 
+ * Add these logging statements to your Frontend Service methods
+ * to trace API calls and response handling.
+ * 
+ * Location: (current)/**/{domain}/_services/{domain}.service.ts
+ */
+
+// ============================================
+// Template for API Call Method (GET/LIST)
+// ============================================
+
+async {도메인}_목록을_조회한다(params?: {Domain}ListParams): Promise<ApiResponse<{Domain}sPresenter>> {
+  // 1. Log request parameters
+  console.log('[Frontend Service] 목록 조회 요청:', {
+    endpoint: {DOMAIN}_API.{도메인}_목록_조회,
+    params: params || {},
+    timestamp: new Date().toISOString(),
+  });
+
+  try {
+    // Build query string
+    const queryString = params ? this.buildQueryString(params) : '';
+    const url = queryString 
+      ? `${DOMAIN}_API.{도메인}_목록_조회}?${queryString}` 
+      : {DOMAIN}_API.{도메인}_목록_조회;
+
+    // 2. Make API call
+    const response = await fetch(url);
+    const json = await response.json();
+
+    // 3. Log response
+    console.log('[Frontend Service] 목록 조회 응답:', {
+      success: json.success,
+      hasData: !!json.data,
+      itemCount: json.data?.items?.length,
+      statusCode: response.status,
+      error: json.message,
+    });
+
+    // 4. Check success
+    if (json.success && json.data) {
+      // 5. Log conversion
+      console.log('[Frontend Service] Model → Presenter 변환:', {
+        modelItemCount: json.data.items?.length,
+      });
+
+      // Convert Model → Presenter
+      const presenters = {Domain}Mapper.fromModelArray(json.data.items);
+
+      console.log('[Frontend Service] 변환 완료:', {
+        presenterCount: presenters.length,
+      });
+
+      return {
+        success: true,
+        data: {
+          items: presenters,
+          pagination: {
+            page: json.data.page,
+            size: json.data.size,
+            total: json.data.total,
+            totalPages: json.data.totalPages,
+          },
+        },
+      };
+    }
+
+    return json;
+  } catch (error) {
+    // 6. Log error
+    console.error('[Frontend Service] 조회 에러:', {
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      params,
+    });
+
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : '목록 조회 실패',
+    };
+  }
+}
+
+// ============================================
+// Template for CREATE Method (POST)
+// ============================================
+
+async {도메인}을_생성한다(data: Create{Domain}Model): Promise<ApiResponse<{Domain}Presenter>> {
+  // 1. Log request
+  console.log('[Frontend Service] 생성 요청:', {
+    endpoint: {DOMAIN}_API.{도메인}_생성,
+    dataKeys: Object.keys(data),
+    hasTranslations: !!data.translations,
+    hasAttachments: !!data.attachments,
+  });
+
+  try {
+    // 2. Make API call
+    const response = await fetch({DOMAIN}_API.{도메인}_생성, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    const json = await response.json();
+
+    // 3. Log response
+    console.log('[Frontend Service] 생성 응답:', {
+      success: json.success,
+      hasData: !!json.data,
+      createdId: json.data?.id,
+      statusCode: response.status,
+      error: json.message,
+    });
+
+    // 4. Convert and return
+    if (json.success && json.data) {
+      const presenter = {Domain}Mapper.fromModel(json.data);
+      return { success: true, data: presenter };
+    }
+
+    return json;
+  } catch (error) {
+    console.error('[Frontend Service] 생성 에러:', {
+      error: error instanceof Error ? error.message : String(error),
+      dataKeys: Object.keys(data),
+    });
+
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : '생성 실패',
+    };
+  }
+}
+
+// ============================================
+// Template for UPDATE Method (PATCH)
+// ============================================
+
+async {도메인}을_수정한다(id: string, data: Update{Domain}Model): Promise<ApiResponse<{Domain}Presenter>> {
+  console.log('[Frontend Service] 수정 요청:', {
+    endpoint: {DOMAIN}_API.{도메인}_수정(id),
+    id,
+    dataKeys: Object.keys(data),
+  });
+
+  try {
+    const response = await fetch({DOMAIN}_API.{도메인}_수정(id), {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    const json = await response.json();
+
+    console.log('[Frontend Service] 수정 응답:', {
+      success: json.success,
+      updatedId: json.data?.id,
+      statusCode: response.status,
+    });
+
+    if (json.success && json.data) {
+      const presenter = {Domain}Mapper.fromModel(json.data);
+      return { success: true, data: presenter };
+    }
+
+    return json;
+  } catch (error) {
+    console.error('[Frontend Service] 수정 에러:', {
+      error: error instanceof Error ? error.message : String(error),
+      id,
+    });
+
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : '수정 실패',
+    };
+  }
+}
+
+// ============================================
+// Template for DELETE Method
+// ============================================
+
+async {도메인}을_삭제한다(id: string): Promise<ApiResponse<void>> {
+  console.log('[Frontend Service] 삭제 요청:', {
+    endpoint: {DOMAIN}_API.{도메인}_삭제(id),
+    id,
+  });
+
+  try {
+    const response = await fetch({DOMAIN}_API.{도메인}_삭제(id), {
+      method: 'DELETE',
+    });
+
+    const json = await response.json();
+
+    console.log('[Frontend Service] 삭제 응답:', {
+      success: json.success,
+      deletedId: id,
+      statusCode: response.status,
+    });
+
+    return json;
+  } catch (error) {
+    console.error('[Frontend Service] 삭제 에러:', {
+      error: error instanceof Error ? error.message : String(error),
+      id,
+    });
+
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : '삭제 실패',
+    };
+  }
+}
+
+// ============================================
+// Usage Notes
+// ============================================
+
+/*
+1. Replace placeholders:
+   - {도메인}: Korean method name (e.g., 브로슈어)
+   - {Domain}: English type name (e.g., Brochure)
+   - {DOMAIN}: Constant prefix (e.g., BROCHURE)
+
+2. Adjust logging detail:
+   - For debugging: Log full objects
+   - For production: Log only keys and counts
+
+3. Remove logs after fixing:
+   - Comment out or remove debug logs once issue is resolved
+   - Keep error logs for monitoring
+
+4. Security:
+   - Never log sensitive data (passwords, tokens, personal info)
+   - Be careful with PII in user data
+*/

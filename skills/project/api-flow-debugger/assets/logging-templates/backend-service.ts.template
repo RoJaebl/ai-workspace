@@ -1,0 +1,347 @@
+/**
+ * Backend Service Logging Template
+ * 
+ * Add these logging statements to your Backend Service methods
+ * to trace CMS API calls, response handling, and DTO→Model conversion.
+ * 
+ * Location: app/api/_backend/modules/**/{domain}/{domain}.service.ts
+ */
+
+import {
+  BaseService,
+  ServiceResponse,
+} from "@/app/api/_backend/common/base.service";
+import { {DOMAIN}_ENDPOINTS } from "./{domain}.endpoints";
+import { {Domain}Adapter } from "./types/{domain}.adapter";
+import type {
+  {Domain}ResponseDto,
+  {Domain}ListResponseDto,
+  Create{Domain}Dto,
+  Update{Domain}Dto,
+} from "./types/{domain}.dto";
+import type {
+  {Domain}Model,
+  {Domain}sModel,
+} from "@/app/(planning)/plan/(cms)/cms/(admin)/homepage/{domain}/_types/{domain}.model";
+
+export class {Domain}Service extends BaseService implements {Domain}ServiceInterface {
+  constructor(accessToken?: string) {
+    super(accessToken);
+  }
+
+  // ============================================
+  // Template for GET List Method
+  // ============================================
+
+  async get{Domain}s(
+    searchParams?: URLSearchParams,
+  ): Promise<ServiceResponse<{Domain}sModel>> {
+    return this.handleApiCall(async () => {
+      // 1. Build endpoint with query params
+      const queryString = searchParams?.toString() ?? "";
+      const endpoint = queryString
+        ? `${{DOMAIN}_ENDPOINTS.{도메인}_목록_조회}?${queryString}`
+        : {DOMAIN}_ENDPOINTS.{도메인}_목록_조회;
+
+      // 2. Log CMS API call
+      console.log('[Backend Service] CMS API 호출:', {
+        method: 'GET',
+        endpoint,
+        queryString,
+        hasToken: !!this.accessToken,
+        tokenLength: this.accessToken?.length,
+      });
+
+      // 3. Fetch from CMS API
+      const response = await fetch(endpoint, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${this.accessToken}`,
+        },
+      });
+
+      const result = await response.json();
+
+      // 4. Log CMS API response
+      console.log('[Backend Service] CMS API 응답:', {
+        ok: response.ok,
+        status: response.status,
+        statusText: response.statusText,
+        hasResult: !!result,
+        itemCount: result.items?.length,
+        resultKeys: result ? Object.keys(result) : [],
+      });
+
+      // 5. Handle error response
+      if (!response.ok) {
+        console.error('[Backend Service] CMS API 에러:', {
+          status: response.status,
+          message: result.message || "Unknown error",
+          result,
+        });
+        throw new Error(result.message || "목록 조회 실패");
+      }
+
+      // 6. Log DTO → Model conversion
+      console.log('[Backend Service] DTO → Model 변환 시작:', {
+        dtoType: result.constructor?.name,
+        dtoKeys: Object.keys(result),
+        itemCount: result.items?.length,
+      });
+
+      // 7. Convert DTO → Model
+      const model = {Domain}Adapter.from{Domain}sResponse(
+        result as {Domain}ListResponseDto
+      );
+
+      // 8. Log conversion result
+      console.log('[Backend Service] DTO → Model 변환 완료:', {
+        modelKeys: Object.keys(model),
+        itemCount: model.items?.length,
+        pagination: {
+          page: model.page,
+          size: model.size,
+          total: model.total,
+        },
+      });
+
+      return model;
+    }, "목록 조회에 실패했습니다.");
+  }
+
+  // ============================================
+  // Template for GET Single Item Method
+  // ============================================
+
+  async get{Domain}(id: string): Promise<ServiceResponse<{Domain}Model>> {
+    return this.handleApiCall(async () => {
+      // Include relations in query param
+      const endpoint = `${{DOMAIN}_ENDPOINTS.{도메인}_상세_조회}?include=translations,attachments,category`;
+
+      console.log('[Backend Service] 상세 조회 CMS API 호출:', {
+        method: 'GET',
+        endpoint,
+        id,
+        hasToken: !!this.accessToken,
+      });
+
+      const response = await fetch(endpoint, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${this.accessToken}`,
+        },
+      });
+
+      const result = await response.json();
+
+      console.log('[Backend Service] 상세 조회 응답:', {
+        ok: response.ok,
+        status: response.status,
+        hasResult: !!result,
+        resultId: result.id,
+        hasTranslations: !!result.translations,
+        hasAttachments: !!result.attachments,
+        hasCategory: !!result.category,
+      });
+
+      if (!response.ok) {
+        console.error('[Backend Service] 상세 조회 에러:', {
+          status: response.status,
+          message: result.message,
+        });
+        throw new Error(result.message || "조회 실패");
+      }
+
+      console.log('[Backend Service] DTO → Model 변환');
+      const model = {Domain}Adapter.from{Domain}Response(
+        result as {Domain}ResponseDto
+      );
+
+      console.log('[Backend Service] 변환 완료:', {
+        modelId: model.id,
+        hasTranslations: !!model.translations,
+      });
+
+      return model;
+    }, "상세 조회에 실패했습니다.");
+  }
+
+  // ============================================
+  // Template for POST (Create) Method
+  // ============================================
+
+  async create{Domain}(
+    data: Create{Domain}Dto
+  ): Promise<ServiceResponse<{Domain}Model>> {
+    return this.handleApiCall(async () => {
+      const endpoint = {DOMAIN}_ENDPOINTS.{도메인}_생성;
+
+      console.log('[Backend Service] 생성 CMS API 호출:', {
+        method: 'POST',
+        endpoint,
+        dataKeys: Object.keys(data),
+        bodySize: JSON.stringify(data).length,
+        hasTranslations: !!data.translations,
+        hasAttachments: !!data.attachments,
+      });
+
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${this.accessToken}`,
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      console.log('[Backend Service] 생성 응답:', {
+        ok: response.ok,
+        status: response.status,
+        createdId: result.id,
+      });
+
+      if (!response.ok) {
+        console.error('[Backend Service] 생성 에러:', {
+          status: response.status,
+          message: result.message,
+          validationErrors: result.errors,
+        });
+        throw new Error(result.message || "생성 실패");
+      }
+
+      console.log('[Backend Service] DTO → Model 변환');
+      const model = {Domain}Adapter.from{Domain}Response(
+        result as {Domain}ResponseDto
+      );
+
+      return model;
+    }, "생성에 실패했습니다.");
+  }
+
+  // ============================================
+  // Template for PATCH (Update) Method
+  // ============================================
+
+  async update{Domain}(
+    id: string,
+    data: Update{Domain}Dto
+  ): Promise<ServiceResponse<{Domain}Model>> {
+    return this.handleApiCall(async () => {
+      const endpoint = {DOMAIN}_ENDPOINTS.{도메인}_수정(id);
+
+      console.log('[Backend Service] 수정 CMS API 호출:', {
+        method: 'PATCH',
+        endpoint,
+        id,
+        dataKeys: Object.keys(data),
+      });
+
+      const response = await fetch(endpoint, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${this.accessToken}`,
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      console.log('[Backend Service] 수정 응답:', {
+        ok: response.ok,
+        status: response.status,
+        updatedId: result.id,
+      });
+
+      if (!response.ok) {
+        console.error('[Backend Service] 수정 에러:', {
+          status: response.status,
+          message: result.message,
+        });
+        throw new Error(result.message || "수정 실패");
+      }
+
+      console.log('[Backend Service] DTO → Model 변환');
+      const model = {Domain}Adapter.from{Domain}Response(
+        result as {Domain}ResponseDto
+      );
+
+      return model;
+    }, "수정에 실패했습니다.");
+  }
+
+  // ============================================
+  // Template for DELETE Method
+  // ============================================
+
+  async delete{Domain}(id: string): Promise<ServiceResponse<void>> {
+    return this.handleApiCall(async () => {
+      const endpoint = {DOMAIN}_ENDPOINTS.{도메인}_삭제(id);
+
+      console.log('[Backend Service] 삭제 CMS API 호출:', {
+        method: 'DELETE',
+        endpoint,
+        id,
+      });
+
+      const response = await fetch(endpoint, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${this.accessToken}`,
+        },
+      });
+
+      console.log('[Backend Service] 삭제 응답:', {
+        ok: response.ok,
+        status: response.status,
+        deletedId: id,
+      });
+
+      if (!response.ok) {
+        const result = await response.json();
+        console.error('[Backend Service] 삭제 에러:', {
+          status: response.status,
+          message: result.message,
+        });
+        throw new Error(result.message || "삭제 실패");
+      }
+
+      // DELETE usually returns no body
+      return undefined;
+    }, "삭제에 실패했습니다.");
+  }
+}
+
+// ============================================
+// Usage Notes
+// ============================================
+
+/*
+1. Replace placeholders:
+   - {Domain}: Type name (e.g., Brochure)
+   - {DOMAIN}: Constant prefix (e.g., BROCHURE)
+   - {domain}: Path segment (e.g., brochure)
+   - {도메인}: Korean name (e.g., 브로슈어)
+
+2. handleApiCall:
+   - Automatically wraps result in ServiceResponse
+   - Catches errors and logs them
+   - Return only the data, not ServiceResponse
+
+3. Include relations:
+   - Add ?include=translations,attachments,category for detail views
+   - Skip includes for list views (performance)
+
+4. Error handling:
+   - BaseService.handleApiCall logs errors automatically
+   - Add specific logs before throwing for context
+
+5. Performance:
+   - Log request timing if needed: performance.now()
+   - Consider body size when logging
+*/
